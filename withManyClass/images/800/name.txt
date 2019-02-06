@@ -1,0 +1,22 @@
+Aaa_enta
+Aaa_lava ball
+inter_brown
+inter_red
+name.txt
+pa_domed vesicle
+pa_gas cavity
+pa_inflection1
+pa_inflection2
+pa_joints
+pa_pipes
+pa_pipes and vesicles
+pa_ropes
+pa_squeezeup
+pa_sq up
+pa_toes
+pa_vesicle banding
+pa_vesicle cyl
+Rock Classification.ipynb
+tr_ftb 800
+tr_rubbly
+tr_slabby
