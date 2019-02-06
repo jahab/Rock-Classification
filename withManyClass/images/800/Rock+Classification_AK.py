@@ -16,9 +16,7 @@ import joblib
 from sklearn.model_selection import train_test_split
 from autokeras import ImageClassifier
 
-
 # In[13]:
-
 
 DATADIR="/home/jafar/Desktop/Master/jafar/Sem4/Rock Classification/withManyClass/images/800"
 #CATEGORIES=["Aaaa", "interflw","pahoehoe","transi"]
@@ -75,7 +73,7 @@ def create_rock_data():
             #print(np.shape(img_array) ,class_num)
             new_array=cv2.resize(img_array,(IMG_SIZE,IMG_SIZE))
             rock_data.append([new_array,class_num])
-            
+
 create_rock_data()
 
 
@@ -134,11 +132,11 @@ def rock_classifier():
     model.add(Conv2D(64,(2,2)))
     model.add(Activation("relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    
+
     model.add(Conv2D(64,(2,2)))
     model.add(Activation("relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    
+
     model.add(Flatten())
     model.add(Dense(100))
 
