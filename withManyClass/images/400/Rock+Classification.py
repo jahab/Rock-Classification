@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+
 
 
 import numpy as np
@@ -112,7 +112,7 @@ for i,j in zip(cats,class_counts):
     ax.annotate(str(j),xy=(i,j))
 
 plt.xticks(rotation=90)
-plt.title("Plot to show Class Imbalance")
+plt.title("Plot to show Class Imbalance | Number of images in every class")
 plt.show()
 
 #pickle_out=open("X.pickle","wb")
