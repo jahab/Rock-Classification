@@ -1,7 +1,4 @@
 
-# coding: utf-8
-
-# In[2]:
 
 
 import numpy as np
@@ -16,8 +13,6 @@ import joblib
 from sklearn.model_selection import train_test_split
 from autokeras import ImageClassifier
 
-
-# In[13]:
 
 
 DATADIR="/home/jafar/Desktop/Master/jafar/Sem4/Rock Classification/withManyClass/images/400"
@@ -35,8 +30,6 @@ CATEGORIES=[
 
 numclasses=len(CATEGORIES)
 
-
-# In[14]:
 
 plt.ion()
 for category in CATEGORIES:
@@ -56,13 +49,9 @@ new=cv2.resize(img_array,(IMG_SIZE,IMG_SIZE))
 plt.imshow(new)
 plt.show()
 
-# In[16]:
-
 
 #img_array
 
-
-# In[17]:
 
 
 rock_data=[]
@@ -75,7 +64,7 @@ def create_rock_data():
             #print(np.shape(img_array) ,class_num)
             new_array=cv2.resize(img_array,(IMG_SIZE,IMG_SIZE))
             rock_data.append([new_array,class_num])
-            
+
 create_rock_data()
 print("Rock data created")
 
@@ -107,13 +96,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 #pickle_out.close()
 
 
-# In[20]:
+
 
 
 #X=np.divide(X,255)
 
 
-# In[33]:
+
 
 """
 def rock_classifier():
@@ -134,11 +123,11 @@ def rock_classifier():
     model.add(Conv2D(64,(2,2)))
     model.add(Activation("relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    
+
     model.add(Conv2D(64,(2,2)))
     model.add(Activation("relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    
+
     model.add(Flatten())
     model.add(Dense(100))
 
@@ -160,7 +149,6 @@ clf.final_fit(X_train, y_train, X_test, y_test, retrain=True)
 y = clf.evaluate(X_test, y_test)
 print(y * 100)
 
-# In[34]:
 
 
 #X.shape[0:]
@@ -183,7 +171,6 @@ from sklearn.pipeline import Pipeline
 kfold = KFold(n_splits=5, shuffle=True)
 
 
-# In[44]:
 
 
 estimator = KerasClassifier(build_fn=rock_classifier, epochs=25, batch_size=1,verbose=1)
