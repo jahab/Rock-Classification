@@ -33,28 +33,28 @@ CATEGORIES=[
 'pa_sheet_pipes and vesicles','pa_sheet_sq up','pa_sheet_vesicle banding','pa_sheet_vesicle cyl',
 'tr_ftb','tr_rubbly','tr_slabby']
 
+numclasses=len(CATEGORIES)
+
 
 # In[14]:
 
-
+plt.ion()
 for category in CATEGORIES:
     path=os.path.join(DATADIR,category)
     for img in os.listdir(path):
         img_array=cv2.imread(os.path.join(path,img))
         plt.imshow(img_array)
         plt.show()
+        plt.close('all')
         break
     break
 
-
-# In[15]:
-
+print("Here")
 
 IMG_SIZE=300
 new=cv2.resize(img_array,(IMG_SIZE,IMG_SIZE))
 plt.imshow(new)
 plt.show()
-plt.close()
 
 # In[16]:
 
@@ -77,7 +77,7 @@ def create_rock_data():
             rock_data.append([new_array,class_num])
             
 create_rock_data()
-
+print("Rock data created")
 
 # for i in training_data:
 #     #print(i)
@@ -96,7 +96,7 @@ for features, label in rock_data:
     y.append(label)
 X=np.array(X).reshape(-1,IMG_SIZE,IMG_SIZE,3)
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42,shuffle=True,stratify=y)
 
 # In[19]:
 
@@ -142,7 +142,7 @@ def rock_classifier():
     model.add(Flatten())
     model.add(Dense(100))
 
-    model.add(Dense(19))
+    model.add(Dense(numclasses))
     model.add(Activation('softmax'))
 
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=["accuracy"])
