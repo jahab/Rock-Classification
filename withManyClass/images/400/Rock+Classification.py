@@ -163,18 +163,26 @@ from keras.utils import np_utils
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 from sklearn.pipeline import Pipeline
+from sklearn.model_selection import StratifiedKFold
 
+#****Basic split of Data****###
+#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42,shuffle=True,stratify=y)
 
+#kfold = KFold(n_splits=5, shuffle=True)
 
+#***Stratified Split of the Data
+skf = StratifiedKFold(n_splits=5, random_state=None,shuffle=True)
 
-kfold = KFold(n_splits=5, shuffle=True)
-
-
-# In[44]:
+for train_index, test_index in skf.split(X,y):
+	print("Train:", train_index, "Validation:", val_index) 
+	X_train, X_test = X[train_index], X[val_index] 
+	y_train, y_test = y[train_index], y[val_index]
 
 
 estimator = KerasClassifier(build_fn=rock_classifier, epochs=20, batch_size=1,verbose=1)
-results=cross_val_score(estimator, X, y, cv=kfold)
+
+
+results=cross_val_score(estimator, X_train, y_yrain, cv=skf)
 print("Baseline: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
 
 filename='results_400_1.sav'
