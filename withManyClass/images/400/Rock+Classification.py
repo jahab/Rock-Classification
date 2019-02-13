@@ -95,14 +95,22 @@ X=np.array(X).reshape(-1,IMG_SIZE,IMG_SIZE,3)
 
 
 # PLotting Class imbalance in the data
-fig=plt.figure(figsize=(10, 5), dpi= 80, facecolor='w', edgecolor='k')
+
 Y=pd.Series(y)
 
 class_counts=Y.value_counts()
 print(class_counts.index)
 cats=pd.Series(CATEGORIES).iloc[class_counts.index]
+
+fig=plt.figure(figsize=(10, 5), dpi= 80, facecolor='w', edgecolor='k')
+ax = fig.add_subplot(111)
+
 #plt.hist(y,bins=numclass, color='#0504aa',alpha=0.7, rwidth=0.85)
+
 plt.scatter(cats,class_counts,s=100)
+for i,j in zip(cats,class_counts):
+    ax.annotate(str(j),xy=(i,j))
+
 plt.xticks(rotation=90)
 plt.title("Plot to show Class Imbalance")
 plt.show()
