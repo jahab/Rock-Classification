@@ -94,6 +94,18 @@ for features, label in training_data:
 X=np.array(X).reshape(-1,IMG_SIZE,IMG_SIZE,3)
 
 
+# PLotting Class imbalance in the data
+fig=plt.figure(figsize=(10, 5), dpi= 80, facecolor='w', edgecolor='k')
+Y=pd.Series(y)
+
+class_counts=Y.value_counts()
+print(class_counts.index)
+cats=pd.Series(CATEGORIES).iloc[class_counts.index]
+#plt.hist(y,bins=numclass, color='#0504aa',alpha=0.7, rwidth=0.85)
+plt.scatter(cats,class_counts,s=100)
+plt.xticks(rotation=90)
+plt.title("Plot to show Class Imbalance")
+plt.show()
 
 #pickle_out=open("X.pickle","wb")
 #pickle.dump(y,pickle_out)
