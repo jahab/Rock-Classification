@@ -72,7 +72,7 @@ def create_training_data():
             #print(np.shape(img_array) ,class_num)
             new_array=cv2.resize(img_array,(IMG_SIZE,IMG_SIZE))
             training_data.append([new_array,class_num])
-            
+
 create_training_data()
 
 
@@ -94,22 +94,14 @@ for features, label in training_data:
 X=np.array(X).reshape(-1,IMG_SIZE,IMG_SIZE,3)
 
 
-# In[19]:
-
-
 
 #pickle_out=open("X.pickle","wb")
 #pickle.dump(y,pickle_out)
 #pickle_out.close()
 
 
-# In[20]:
-
 
 X=np.divide(X,255)
-
-
-# In[33]:
 
 
 def rock_classifier():
@@ -130,11 +122,11 @@ def rock_classifier():
     model.add(Conv2D(64,(2,2)))
     model.add(Activation("relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    
+
     model.add(Conv2D(64,(2,2)))
     model.add(Activation("relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    
+
     model.add(Flatten())
     model.add(Dense(100))
 
@@ -146,17 +138,7 @@ def rock_classifier():
     return model
 #rock_classifier()
 
-
-# In[34]:
-
-
-#X.shape[0:]
-
-
 # ### CV accuracy
-
-
-
 
 from keras.wrappers.scikit_learn import KerasClassifier
 from keras.utils import np_utils
@@ -174,8 +156,8 @@ from sklearn.model_selection import StratifiedKFold
 skf = StratifiedKFold(n_splits=5, random_state=None,shuffle=True)
 
 for train_index, test_index in skf.split(X,y):
-	print("Train:", train_index, "Validation:", val_index) 
-	X_train, X_test = X[train_index], X[val_index] 
+	print("Train:", train_index, "Validation:", val_index)
+	X_train, X_test = X[train_index], X[val_index]
 	y_train, y_test = y[train_index], y[val_index]
 
 
@@ -183,8 +165,8 @@ estimator = KerasClassifier(build_fn=rock_classifier, epochs=20, batch_size=1,ve
 
 
 results=cross_val_score(estimator, X_train, y_yrain, cv=skf)
+
 print("Baseline: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
 
-filename='results_400_1.sav'
+filename='results_400_skf.sav'
 joblib.dump(results, filename)
-
