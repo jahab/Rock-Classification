@@ -1,10 +1,7 @@
 
-# coding: utf-8
-
-# In[2]:
-
 
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
@@ -30,7 +27,7 @@ CATEGORIES=[
 'pa_sheet_pipes and vesicles','pa_sheet_sq up','pa_sheet_vesicle banding','pa_sheet_vesicle cyl',
 'tr_ftb 800','tr_rubbly','tr_slabby']
 
-
+numclass=len(CATEGORIES)
 # In[14]:
 
 
@@ -72,7 +69,7 @@ def create_training_data():
             #print(np.shape(img_array) ,class_num)
             new_array=cv2.resize(img_array,(IMG_SIZE,IMG_SIZE))
             training_data.append([new_array,class_num])
-            
+
 create_training_data()
 
 
@@ -93,21 +90,30 @@ for features, label in training_data:
     y.append(label)
 X=np.array(X).reshape(-1,IMG_SIZE,IMG_SIZE,3)
 
+Y=pd.Series(y)
 
-# In[19]:
+class_counts=Y.value_counts()
+print(class_counts.index)
+cats=pd.Series(CATEGORIES).iloc[class_counts.index]
 
+fig=plt.figure(figsize=(10, 5), dpi= 80, facecolor='w', edgecolor='k')
+ax = fig.add_subplot(111)
 
+#plt.hist(y,bins=numclass, color='#0504aa',alpha=0.7, rwidth=0.85)
 
-#pickle_out=open("X.pickle","wb")
-#pickle.dump(y,pickle_out)
-#pickle_out.close()
+plt.scatter(cats,class_counts,s=100)
+for i,j in zip(cats,class_counts):
+    ax.annotate(str(j),xy=(i,j))
 
+plt.xticks(rotation=90)
+plt.title("Plot to show Class Imbalance | Number of images in every class")
+plt.show()
 
-# In[20]:
+pickle_out=open("X.pickle","wb")
+pickle.dump(y,pickle_out)
+pickle_out.close()
 
-
-#X=np.divide(X,255)
-
+X=np.divide(X,255)
 
 # In[33]:
 
@@ -130,15 +136,15 @@ def rock_classifier():
     model.add(Conv2D(64,(2,2)))
     model.add(Activation("relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    
+
     model.add(Conv2D(64,(2,2)))
     model.add(Activation("relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    
+
     model.add(Flatten())
     model.add(Dense(100))
 
-    model.add(Dense(19))
+    model.add(Dense(numclass))
     model.add(Activation('softmax'))
 
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=["accuracy"])
@@ -179,4 +185,3 @@ print("Baseline: %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
 
 filename='results_800_5.sav'
 joblib.dump(results, filename)
-
